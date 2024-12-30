@@ -28,16 +28,6 @@ export default function Search({ onSelect, selected }: SearchProps) {
             },
           });
 
-          console.log(
-            "res:",
-            res.data.items.map((item) => ({
-              ...item,
-              snippet: {
-                ...item.snippet,
-                title: htmlToText(item.snippet.title),
-              },
-            }))
-          );
           setSearchResults(
             res.data.items.map((item) => ({
               ...item,

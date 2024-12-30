@@ -17,7 +17,6 @@ const [usePlayerContext, PlayerProvider] = createCtx<PlayerContextType>();
 export default function PlayerContextProvider({ children }: PropsWithChildren) {
   const [videoId, setVideoId] = useState("");
   const [queue, setQueue] = useLocalStorage<SongData[]>("queue", []);
-  console.log("videoId:", videoId);
 
   function playNextVideo() {
     if (queue.length > 0) {
