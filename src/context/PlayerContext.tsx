@@ -1,7 +1,6 @@
 import { PropsWithChildren, useState } from "react";
 import { createCtx } from "../utils/createCtx";
-import { useLocalStorage } from "usehooks-ts";
-import { SongData } from "../types/SongData";
+import useQueue from "../hooks/useQueue";
 
 interface PlayerContextType {
   videoId: string;
@@ -16,7 +15,7 @@ const [usePlayerContext, PlayerProvider] = createCtx<PlayerContextType>();
 
 export default function PlayerContextProvider({ children }: PropsWithChildren) {
   const [videoId, setVideoId] = useState("");
-  const [queue, setQueue] = useLocalStorage<SongData[]>("queue", []);
+  const [queue, setQueue] = useQueue();
 
   function playNextVideo() {
     if (queue.length > 0) {

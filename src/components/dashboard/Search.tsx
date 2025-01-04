@@ -3,8 +3,11 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { SearchResult } from "../../types/SearchResult";
 import { htmlToText } from "html-to-text";
+import useGoogleKey from "../../hooks/useGoogleKey";
+import { useSnackbarContext } from "../../context/SnackbarContext";
 
-const url = "https://www.googleapis.com/youtube/v3/search";
+const searchURL = "https://www.googleapis.com/youtube/v3/search";
+const infoURL = "https://www.googleapis.com/youtube/v3/videos";
 
 interface SearchProps {
   selected: SearchResult | null;
@@ -14,22 +17,33 @@ interface SearchProps {
 export default function Search({ onSelect, selected }: SearchProps) {
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [googleKey] = useGoogleKey();
+  const { showSnackbar } = useSnackbarContext();
 
   const querySearch = useMemo(
     () =>
       debounce(async (input) => {
         try {
-          const res = await axios.get<{ items: SearchResult[] }>(url, {
+          const res = await axios.get<{ items: SearchResult[] }>(searchURL, {
             params: {
               part: "snippet",
               type: "video",
               q: `Karaoke ${input}`,
-              key: "AIzaSyChM70JELoUABO0KiEKR6xRzFuQZPov0ok",
+              key: googleKey,
+              maxResults: 10,
             },
           });
 
+          const embeddableResults = await axios.get<{ items: SearchResult[] }>(infoURL, {
+            params: {
+              part: "status",
+              id: res.data.items.map((item) => item.id.videoId).join(","),
+              key: googleKey,
+            }
+          })
+
           setSearchResults(
-            res.data.items.map((item) => ({
+            res.data.items.filter((_, i) => embeddableResults.data.items[i].status.embeddable).map((item) => ({
               ...item,
               snippet: {
                 ...item.snippet,
@@ -39,6 +53,7 @@ export default function Search({ onSelect, selected }: SearchProps) {
           );
         } catch (error) {
           console.error("error:", error);
+          showSnackbar();
         }
       }, 1000),
     []

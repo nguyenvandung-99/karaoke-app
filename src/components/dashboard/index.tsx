@@ -3,9 +3,8 @@ import { PropsWithChildren, useState } from "react";
 import Queue from "./Queue";
 import Search from "./Search";
 import { SearchResult } from "../../types/SearchResult";
-import { useLocalStorage } from "usehooks-ts";
 import SelectModal from "./SelectModal";
-import { SongData } from "../../types/SongData";
+import useQueue from "../../hooks/useQueue";
 
 type TabValue = "queue" | "search";
 
@@ -13,7 +12,7 @@ export default function Dashboard() {
   const [tabValue, setTabValue] = useState<TabValue>("queue");
   const [selected, setSelected] = useState<SearchResult | null>(null);
 
-  const [value, setValue] = useLocalStorage<SongData[]>("queue", []);
+  const [value, setValue] = useQueue();
 
   function addToQueue(name: string) {
     setValue([

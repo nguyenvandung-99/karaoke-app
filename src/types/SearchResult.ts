@@ -16,4 +16,8 @@ export interface SearchResult {
     liveBroadcastContent: string;
     publishTime: string;
   };
+  status: {
+    embeddable: boolean;
+    publicStatsViewable: boolean
+  }
 }

@@ -1,11 +1,10 @@
-import { useLocalStorage } from "usehooks-ts";
-import { SongData } from "../../types/SongData";
 import { Box, MenuItem } from "@mui/material";
 import { StyledMenu } from "../elements/Menu";
 import { usePlayerContext } from "../../context/PlayerContext";
+import useQueue from "../../hooks/useQueue";
 
 export default function Queue() {
-  const [queue] = useLocalStorage<SongData[]>("queue", []);
+  const [queue] = useQueue();
 
   const { playVideo, removeVideoFromQueue, moveVideoToTop } =
     usePlayerContext();
