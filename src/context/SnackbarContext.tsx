@@ -17,7 +17,7 @@ export default function SnackbarContextProvider({ children }: PropsWithChildren)
   const [isOpenModal, setIsOpenModal] = useState(false)
 
   const handleClose = (
-    event: React.SyntheticEvent | Event,
+    _: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason,
   ) => {
     if (reason === 'clickaway') {
