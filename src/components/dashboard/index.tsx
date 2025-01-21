@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { PropsWithChildren, useState } from "react";
 import Queue from "./Queue";
 import Search from "./Search";
@@ -28,15 +28,40 @@ export default function Dashboard() {
   return (
     <>
       {selected && <SelectModal selected={selected} addToQueue={addToQueue} />}
-      <Box sx={{ width: "100%", display: selected ? "none" : "block", maxHeight: "100vh", overflowY: "auto" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider", position: "sticky", top: 0, zIndex: 1, bgcolor: "#ddd" }}>
-          <Tabs
-            value={tabValue}
-            onChange={(_, newValue) => setTabValue(newValue)}
+      <Box
+        sx={{
+          width: "100%",
+          display: selected ? "none" : "block",
+          overflowY: "auto",
+          height: "100vh",
+        }}
+      >
+        <Box
+          sx={{
+            borderColor: "divider",
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+          }}
+        >
+          <Button
+            onClick={() => setTabValue("queue")}
+            color={tabValue === "queue" ? "primary" : "secondary"}
+            variant="contained"
+            sx={{ m: 1, borderRadius: "18px" }}
           >
-            <Tab label="Queue" value={"queue"} />
-            <Tab label="Search" value={"search"} />
-          </Tabs>
+            Queue
+          </Button>
+          <Button
+            onClick={() => setTabValue("search")}
+            color={tabValue === "search" ? "primary" : "secondary"}
+            variant="contained"
+            sx={{ m: 1, borderRadius: "18px" }}
+          >
+            Search
+          </Button>
         </Box>
         <TabPanel value={tabValue} index={"queue"}>
           <Queue />

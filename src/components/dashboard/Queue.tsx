@@ -33,7 +33,7 @@ export default function Queue() {
               <Box sx={{ fontSize: "14px", textAlign: "left" }}>
                 <Box>{song.snippet.title}</Box>
                 <Box sx={{ color: "text.secondary" }}>
-                  performed by: {singer}
+                  Song for: {singer}
                 </Box>
               </Box>
             </Box>
