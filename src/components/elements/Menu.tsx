@@ -5,6 +5,7 @@ interface IStyledMenuProps {
   children: React.ReactNode
   menuButtonContent: React.ReactNode
   menuPosition?: 'center' | 'right' | 'left'
+  closeOnClick?: boolean
   slotProps?: {
     menuButton?: ButtonProps
     menuProps?: MenuProps
@@ -30,6 +31,7 @@ export const StyledMenu = ({
   children,
   menuButtonContent,
   slotProps,
+  closeOnClick = false,
   menuPosition = 'center',
 }: IStyledMenuProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -58,6 +60,7 @@ export const StyledMenu = ({
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        {...(closeOnClick && { onClick: handleClose })}
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}

@@ -1,10 +1,11 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, ButtonProps, styled } from "@mui/material";
 import { PropsWithChildren, useState } from "react";
 import Queue from "./Queue";
 import Search from "./Search";
 import { SearchResult } from "../../types/SearchResult";
 import SelectModal from "./SelectModal";
 import useQueue from "../../hooks/useQueue";
+import background from "../../assets/KTV_search_queue.png";
 
 type TabValue = "queue" | "search";
 
@@ -26,7 +27,15 @@ export default function Dashboard() {
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        maxHeight: "100vh",
+      }}
+    >
       {selected && <SelectModal selected={selected} addToQueue={addToQueue} />}
       <Box
         sx={{
@@ -46,22 +55,19 @@ export default function Dashboard() {
             gridTemplateColumns: "1fr 1fr",
           }}
         >
-          <Button
+          <StyledButton
             onClick={() => setTabValue("queue")}
             color={tabValue === "queue" ? "primary" : "secondary"}
-            variant="contained"
-            sx={{ m: 1, borderRadius: "18px" }}
+            sx={{ m: 1 }}
           >
             Queue
-          </Button>
-          <Button
+          </StyledButton>
+          <StyledButton
             onClick={() => setTabValue("search")}
             color={tabValue === "search" ? "primary" : "secondary"}
-            variant="contained"
-            sx={{ m: 1, borderRadius: "18px" }}
           >
             Search
-          </Button>
+          </StyledButton>
         </Box>
         <TabPanel value={tabValue} index={"queue"}>
           <Queue />
@@ -70,7 +76,7 @@ export default function Dashboard() {
           <Search onSelect={setSelected} selected={selected} />
         </TabPanel>
       </Box>
-    </>
+    </Box>
   );
 }
 
@@ -89,3 +95,15 @@ function TabPanel(
     </Box>
   );
 }
+
+const StyledButton = styled((props: ButtonProps) => (
+  <Button variant="contained" {...props} />
+))(() => ({
+  margin: 8,
+  padding: "0 16px",
+  borderRadius: "18px",
+  fontWeight: "bold",
+  color: "white",
+  fontSize: "20px",
+  fontFamily: "Freude",
+}));

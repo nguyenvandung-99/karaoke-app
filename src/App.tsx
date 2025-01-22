@@ -8,7 +8,6 @@ import Login from "./components/login";
 import SnackbarContextProvider from "./context/SnackbarContext";
 import { useEffect } from "react";
 import { theme } from "./theme";
-import background from "./assets/KTV_search_queue.png";
 
 function App() {
   useEffect(() => {
@@ -31,17 +30,7 @@ function App() {
                 gridTemplateColumns: "300px 1fr",
               }}
             >
-              <Box
-                sx={{
-                  backgroundImage: `url(${background})`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
-                  maxHeight: "100vh",
-                }}
-              >
-                <Dashboard />
-              </Box>
+              <Dashboard />
               <Player />
             </Box>
           )}
