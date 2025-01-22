@@ -17,8 +17,8 @@ function App() {
   const [googleKey] = useGoogleKey();
   return (
     <ThemeProvider theme={theme}>
-      <PlayerContextProvider>
-        <SnackbarContextProvider>
+      <SnackbarContextProvider>
+        <PlayerContextProvider>
           {!googleKey ? (
             <Login />
           ) : (
@@ -34,8 +34,8 @@ function App() {
               <Player />
             </Box>
           )}
-        </SnackbarContextProvider>
-      </PlayerContextProvider>
+        </PlayerContextProvider>
+      </SnackbarContextProvider>
     </ThemeProvider>
   );
 }

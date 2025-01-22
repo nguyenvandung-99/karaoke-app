@@ -1,10 +1,11 @@
 import Youtube from "react-youtube";
 import { usePlayerContext } from "../../context/PlayerContext";
+import { Box } from "@mui/material";
 
 export default function Player() {
   const { videoId, playNextVideo } = usePlayerContext();
 
-  return videoId && (
+  return videoId ? (
     <Youtube
       videoId={videoId}
       opts={{
@@ -16,5 +17,16 @@ export default function Player() {
       }}
       onEnd={playNextVideo}
     />
-  )
+  ) : (
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "end",
+      }}
+    >
+      Developed by @DaniBaddie
+    </Box>
+  );
 }

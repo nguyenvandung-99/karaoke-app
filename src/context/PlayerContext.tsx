@@ -1,6 +1,7 @@
 import { PropsWithChildren, useState } from "react";
 import { createCtx } from "../utils/createCtx";
 import useQueue from "../hooks/useQueue";
+import { useSnackbarContext } from "./SnackbarContext";
 
 interface PlayerContextType {
   videoId: string;
@@ -17,9 +18,13 @@ export default function PlayerContextProvider({ children }: PropsWithChildren) {
   const [videoId, setVideoId] = useState("");
   const [queue, setQueue] = useQueue();
 
+  const { showSnackbar } = useSnackbarContext();
+
   function playNextVideo() {
     if (queue.length > 0) {
-      playVideo(queue[0].song.id.videoId);
+      const nowPlaying = queue[0];
+      playVideo(nowPlaying.song.id.videoId);
+      showSnackbar({ message: `Playing: ${nowPlaying.song.snippet.title} for ${nowPlaying.singer}` });
     }
   }
 

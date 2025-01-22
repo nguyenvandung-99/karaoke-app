@@ -1,68 +1,47 @@
 import { PropsWithChildren, useState } from "react";
 import { createCtx } from "../utils/createCtx";
-import { Button, IconButton, SnackbarCloseReason, Snackbar, Dialog, Box } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
-import Login from "../components/login";
+import { Snackbar } from "@mui/material";
 
+interface SnackbarContent {
+  message: string;
+  action?: React.ReactNode;
+}
 interface SnackbarContextType {
-  showSnackbar: () => void;
+  showSnackbar: ({ message, action }: SnackbarContent) => void;
+  isOpenSnackbar: boolean;
+  setIsOpenSnackbar: (isOpen: boolean) => void;
 }
 
-const [useSnackbarContext, SnackbarProvider] = createCtx<SnackbarContextType>()
+const [useSnackbarContext, SnackbarProvider] = createCtx<SnackbarContextType>();
 
-export { useSnackbarContext }
+export { useSnackbarContext };
 
-export default function SnackbarContextProvider({ children }: PropsWithChildren) {
-  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false)
-  const [isOpenModal, setIsOpenModal] = useState(false)
+export default function SnackbarContextProvider({
+  children,
+}: PropsWithChildren) {
+  const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
 
-  const handleClose = (
-    _: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason,
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const [snackbarContent, setSnackbarContent] = useState<SnackbarContent>({
+    message: "",
+    action: undefined,
+  });
 
-    setIsOpenSnackbar(false);
-  };
-
-  const openModal = () => {
-    setIsOpenModal(true)
-    setIsOpenSnackbar(false)
+  function showSnackbar({ message, action }: SnackbarContent) {
+    setSnackbarContent({ message, action });
+    setIsOpenSnackbar(true);
   }
 
-  const action = (
-    <>
-      <Button color="primary" size="small" onClick={openModal}>
-        Enter new key
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </>
-  );
-
   return (
-    <SnackbarProvider value={{ showSnackbar: () => setIsOpenSnackbar(true) }}>
+    <SnackbarProvider
+      value={{ showSnackbar, isOpenSnackbar, setIsOpenSnackbar }}
+    >
       {children}
       <Snackbar
         open={isOpenSnackbar}
-        autoHideDuration={5000}
+        autoHideDuration={10000}
         onClose={() => setIsOpenSnackbar(false)}
-        message="An error happened. Please enter a new key or come back tomorrow."
-        action={action}
+        {...snackbarContent}
       />
-      <Dialog maxWidth='xs' open={isOpenModal} onClose={() => setIsOpenModal(false)}>
-        <Box sx={{ p: 4 }}>
-          <Login />
-        </Box>
-      </Dialog>
-    </SnackbarProvider >
-  )
+    </SnackbarProvider>
+  );
 }
