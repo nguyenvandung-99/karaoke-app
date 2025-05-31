@@ -27,13 +27,14 @@ export default function AddCommentSection() {
           alt=""
           style={{ width: '100%' }}
         />
-        <Box> If this song resonates, where are you transported to?</Box>
+        <Box sx={{ mt: '2rem', fontSize: '1.5rem'}}> If this song resonates, where are you transported to?</Box>
         <TextField
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           fullWidth
           multiline
           rows={4}
+          placeholder="a feeling, a memory, a possibility, a world?"
         />
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
           <Button variant="contained" onClick={onSendToPortal}>

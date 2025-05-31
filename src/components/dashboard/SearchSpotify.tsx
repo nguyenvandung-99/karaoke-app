@@ -2,6 +2,7 @@ import { Autocomplete, Box, debounce, TextField } from '@mui/material';
 import { SpotifyApi, Track } from '@spotify/web-api-ts-sdk';
 import { useEffect, useMemo, useState } from 'react';
 import { useSnackbarContext } from '../../context/SnackbarContext';
+import useSpotifyCredentials from '../../hooks/useSpotifyCredentials';
 
 interface SearchSpotifyProps {
   onSelectTrack: (selected: Track | null) => void;
@@ -12,9 +13,9 @@ export default function SearchSpotify({
   onSelectTrack,
   selectedTrack,
 }: SearchSpotifyProps) {
-  const clientId = 'abe1246f5c464865af56bc94dd6e5f53';
-  const clientSecret = 'e25d8abf044c40369c35751588027f68';
-
+  const {
+    spotifyCredentials: { clientId, clientSecret },
+  } = useSpotifyCredentials();
   const { showSnackbar } = useSnackbarContext();
 
   const sdk = useMemo(

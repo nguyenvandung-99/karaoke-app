@@ -83,7 +83,7 @@ export default function Songbook() {
   }
 
   return (
-    <Box sx={{ mx: '2rem' }}>
+    <Box sx={{ px: '2rem', bgcolor: 'pink' }}>
       <Box>Songbook</Box>
       <Box
         sx={{ display: 'flex', alignItems: 'center', gap: '1rem', mt: '1rem' }}

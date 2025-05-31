@@ -9,7 +9,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "build-deploy": "yarn build && yarn deploy",
+    "predeploy": "node predeploy.mjs",
+    "build-deploy": "yarn build && yarn predeploy && yarn deploy",
     "deploy": "gh-pages -d dist",
     "compile": "tsc -p tsconfig.json"
   },
