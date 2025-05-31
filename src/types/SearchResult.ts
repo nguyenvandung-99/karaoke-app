@@ -1,4 +1,4 @@
-export interface SearchResult {
+export interface SearchYoutubeResult {
   kind: string;
   etag: string;
   id: { kind: string; videoId: string };

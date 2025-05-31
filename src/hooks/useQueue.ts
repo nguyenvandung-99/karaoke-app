@@ -1,7 +1,8 @@
-import { useLocalStorage } from "usehooks-ts";
-import { SongData } from "../types/SongData";
+import { QueueSongData } from "../types/SongData";
 import { STORAGE_QUEUE } from "../utils/localStorageKeys";
+import { useSyncedLocalStorage } from "./useSyncedLocalStorage";
 
 export default function useQueue() {
-  return useLocalStorage<SongData[]>(STORAGE_QUEUE, []);
+  const [queue, setQueue] = useSyncedLocalStorage<QueueSongData[]>(STORAGE_QUEUE, []);
+  return [queue, setQueue] as const;
 }

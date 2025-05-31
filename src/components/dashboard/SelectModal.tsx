@@ -1,9 +1,9 @@
 import { Box, Button, TextField } from "@mui/material";
-import { SearchResult } from "../../types/SearchResult";
+import { SearchYoutubeResult } from "../../types/SearchResult";
 import { useState } from "react";
 
 interface SelectModalProps {
-  selected: SearchResult;
+  selected: SearchYoutubeResult;
   addToQueue: (name: string) => void;
 }
 
