@@ -1,6 +1,6 @@
 {
   "name": "karaoke-app",
-  "homepage": "/karaoke-app/#",
+  "homepage": "https://nguyenvandung-99.github.io/karaoke-app/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,8 +9,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "node predeploy.mjs",
-    "build-deploy": "yarn build && yarn predeploy && yarn deploy",
+    "pre-deploy": "node predeploy.mjs",
+    "build-deploy": "yarn build && yarn pre-deploy && yarn deploy",
     "deploy": "gh-pages -d dist",
     "compile": "tsc -p tsconfig.json"
   },

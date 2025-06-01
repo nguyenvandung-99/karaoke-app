@@ -21,9 +21,9 @@ export default function AddCommentSection() {
           mx: '2rem',
         }}
       >
-        <Box>Now playing: {nowPlaying.song.snippet.title}</Box>
+        <Box>Now playing: {nowPlaying.video.title}</Box>
         <img
-          src={nowPlaying.song.snippet.thumbnails.medium.url}
+          src={nowPlaying.video.thumbnail}
           alt=""
           style={{ width: '100%' }}
         />

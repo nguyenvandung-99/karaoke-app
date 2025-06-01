@@ -1,7 +1,11 @@
-import { SearchYoutubeResult } from "./SearchResult";
+interface VideoInfo {
+  videoId: string;
+  thumbnail: string;
+  title?: string;
+}
 
 export interface QueueSongData {
-  song: SearchYoutubeResult;
+  video: VideoInfo
   singer: string;
 }
 
@@ -13,12 +17,7 @@ export interface Comment {
 
 export interface ArchivedSongData {
   uuid: string;
-  song: SearchYoutubeResult;
-  singer: string;
-  videos: {
-    videoId: string;
-    thumbnail: string
-  }[];
+  videos: VideoInfo[];
   spotifyId: string;
   comments: Comment[];
 }

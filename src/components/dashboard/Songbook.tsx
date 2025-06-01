@@ -29,8 +29,12 @@ export default function Songbook() {
     setQueue([
       ...queue,
       {
-        song: selection.selected,
         singer: selection.name || '',
+        video: {
+          videoId: selection.selected.id.videoId,
+          title: selection.selected.snippet.title,
+          thumbnail: selection.selected.snippet.thumbnails.default.url,
+        },
       },
     ]);
     setSelectedTrack(null);
@@ -48,12 +52,11 @@ export default function Songbook() {
       const uuid = crypto.randomUUID();
 
       const newArchivedItem: ArchivedSongData = {
-        song: selection.selected,
-        singer: selection.name || '',
         videos: [
           {
             videoId: selection.selected.id.videoId,
             thumbnail: selection.selected.snippet.thumbnails.default.url,
+            title: selection.selected.snippet.title,
           },
         ],
         spotifyId: selectedTrack?.id || '',
@@ -71,6 +74,7 @@ export default function Songbook() {
           {
             videoId: selection.selected.id.videoId,
             thumbnail: selection.selected.snippet.thumbnails.default.url,
+            title: selection.selected.snippet.title,
           },
         ];
         const updatedArchivedItem: ArchivedSongData = {

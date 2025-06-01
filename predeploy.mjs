@@ -15,6 +15,7 @@ function updateAssetPaths(content) {
   return content.replace(
     /(?:href|src)=["']\/(assets\/[^"']+)["']|url\((["']?)(\/assets\/[^"')]+)\1\)/g,
     (match, hrefSrcPath, quote, urlPath) => {
+      console.log('match:', match)
       if (urlPath) {
         // It's a url(...)
         return `url(${quote}${prefix}${urlPath}${quote})`;

@@ -24,7 +24,7 @@ const [usePlayerContext, PlayerProvider] = createCtx<PlayerContextType>();
 export default function PlayerContextProvider({ children }: PropsWithChildren) {
   const [nowPlaying, setNowPlaying] =
     useSyncedLocalStorage<QueueSongData | null>('nowPlaying', null);
-  const videoId = nowPlaying?.song.id.videoId || '';
+  const videoId = nowPlaying?.video.videoId || '';
 
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
   const [currentTimestamp, setCurrentTimestamp] = useSyncedLocalStorage<number>('currentTimestamp', 0);
@@ -47,28 +47,28 @@ export default function PlayerContextProvider({ children }: PropsWithChildren) {
   function playNextVideo() {
     if (queue.length > 0) {
       const nowPlaying = queue[0];
-      playVideo(nowPlaying.song.id.videoId);
+      playVideo(nowPlaying.video.videoId);
       showSnackbar({
-        message: `Playing: ${nowPlaying.song.snippet.title} for ${nowPlaying.singer}`,
+        message: `Playing: ${nowPlaying.video.title || ''} for ${nowPlaying.singer}`,
       });
     }
   }
 
   function playVideo(videoId: string) {
     setNowPlaying(
-      queue.find((item) => item.song.id.videoId === videoId) || null
+      queue.find((item) => item.video.videoId === videoId) || null
     );
     removeVideoFromQueue(videoId);
   }
 
   function removeVideoFromQueue(videoId: string) {
-    setQueue(queue.filter((item) => item.song.id.videoId !== videoId));
+    setQueue(queue.filter((item) => item.video.videoId !== videoId));
   }
 
   function moveVideoToTop(videoId: string) {
-    const index = queue.findIndex((item) => item.song.id.videoId === videoId);
+    const index = queue.findIndex((item) => item.video.videoId === videoId);
     const item = queue[index];
-    const newQueue = queue.filter((item) => item.song.id.videoId !== videoId);
+    const newQueue = queue.filter((item) => item.video.videoId !== videoId);
     newQueue.unshift(item);
     setQueue(newQueue);
   }

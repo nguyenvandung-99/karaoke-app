@@ -23,8 +23,12 @@ export default function Dashboard() {
     setValue([
       ...value,
       {
-        song: selected,
         singer: name,
+        video: {
+          videoId: selected.id.videoId,
+          title: selected.snippet.title,
+          thumbnail: selected.snippet.thumbnails.default.url,
+        }
       },
     ]);
     setSelected(null);

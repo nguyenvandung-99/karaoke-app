@@ -11,12 +11,12 @@ export default function Queue() {
 
   return (
     <Box>
-      {queue.map(({ song, singer }) => (
+      {queue.map(({ singer, video: { thumbnail, videoId, title } }) => (
         <StyledMenu
-          key={song.id.videoId}
+          key={videoId}
           menuButtonContent={
             <Box
-              key={song.id.videoId}
+              key={videoId}
               sx={{
                 display: "grid",
                 gap: "0.5rem",
@@ -26,12 +26,12 @@ export default function Queue() {
               }}
             >
               <img
-                src={song.snippet.thumbnails.medium.url}
+                src={thumbnail}
                 alt=""
                 style={{ width: "100%" }}
               />
               <Box sx={{ fontSize: "14px", textAlign: "left" }}>
-                <Box>{song.snippet.title}</Box>
+                <Box>{title}</Box>
                 <Box sx={{ color: "text.secondary" }}>
                   Song for: {singer}
                 </Box>
@@ -39,11 +39,11 @@ export default function Queue() {
             </Box>
           }
         >
-          <MenuItem onClick={() => playVideo(song.id.videoId)}>Play</MenuItem>
-          <MenuItem onClick={() => removeVideoFromQueue(song.id.videoId)}>
+          <MenuItem onClick={() => playVideo(videoId)}>Play</MenuItem>
+          <MenuItem onClick={() => removeVideoFromQueue(videoId)}>
             Remove
           </MenuItem>
-          <MenuItem onClick={() => moveVideoToTop(song.id.videoId)}>
+          <MenuItem onClick={() => moveVideoToTop(videoId)}>
             Move to top
           </MenuItem>
         </StyledMenu>
