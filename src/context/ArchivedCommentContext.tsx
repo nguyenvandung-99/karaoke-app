@@ -9,6 +9,7 @@ interface CommentContextType {
   currentArchiveId: string;
   archivedItem: ArchivedSongData | null;
   addComment: (comment: string) => Promise<void>;
+  markCommentAsSeen: (commentUuid: string) => void;
 }
 
 const [useArchivedCommentContext, ArchivedCommentProvider] =
@@ -18,7 +19,7 @@ export default function ArchivedCommentContextProvider({
   children,
 }: React.PropsWithChildren) {
   const { currentArchiveId, setCurrentArchiveId } = useCurrentArchiveId();
-  const { archive } = useArchive();
+  const { archive, setArchive } = useArchive();
   const { currentTimestamp, videoId } = usePlayerContext();
 
   useEffect(() => {
@@ -36,8 +37,6 @@ export default function ArchivedCommentContextProvider({
       : null;
   }, [currentArchiveId, archive]);
 
-  const { setArchive } = useArchive();
-
   async function addComment(comment: string) {
     if (!archivedItem) return;
 
@@ -49,8 +48,27 @@ export default function ArchivedCommentContextProvider({
           comment,
           timestamp: currentTimestamp,
           uuid: crypto.randomUUID(),
+          isNew: true,
         },
       ],
+    };
+
+    setArchive((prev) => {
+      const index = prev.findIndex((item) => item.uuid === archivedItem.uuid);
+      const newArchive = [...prev];
+      newArchive[index] = updatedItem;
+      return newArchive;
+    });
+  }
+
+  function markCommentAsSeen(commentUuid: string) {
+    if (!archivedItem) return;
+
+    const updatedItem: ArchivedSongData = {
+      ...archivedItem,
+      comments: archivedItem.comments.map((comment) =>
+        comment.uuid === commentUuid ? { ...comment, isNew: false } : comment
+      ),
     };
 
     setArchive((prev) => {
@@ -67,6 +85,7 @@ export default function ArchivedCommentContextProvider({
         currentArchiveId,
         archivedItem,
         addComment,
+        markCommentAsSeen,
       }}
     >
       {children}

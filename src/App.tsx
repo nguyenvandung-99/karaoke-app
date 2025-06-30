@@ -12,9 +12,17 @@ import DoubleScreenPlayer from './components/layout/DoubleScreen/DoubleScreenPla
 import DoubleScreenHome from './components/layout/DoubleScreen/DoubleScreenHome';
 import DoubleScreenSongbook from './components/layout/DoubleScreen/DoubleScreenSongbook';
 import ArchivedCommentContextProvider from './context/ArchivedCommentContext';
+import DoubleScreenArchive from './components/layout/DoubleScreen/DoubleScreenArchive';
+import ArchiveWorldContextProvider from './context/ArchiveWorldContext';
+import DoubleScreenSing from './components/layout/DoubleScreen/DoubleScreenSing';
+import useArchive from './hooks/useArchive';
+import useSync from './hooks/useSync';
+import data from '../outputWithViewCount.json'
 
 function App() {
   const [googleKey] = useGoogleKey();
+  const { setArchive } = useArchive();
+  const { lastSync, setLastSync } = useSync();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +31,13 @@ function App() {
     if (!googleKey) {
       navigate('/login');
     }
+
+    // sync with last used archive on 30 June 2025 00:00 GMT+1
+    if (lastSync < new Date('2025-06-30T00:00:00+01:00').getTime()) {
+      console.log('Syncing with last used archive');
+      setArchive(data);
+      setLastSync(Date.now());
+    }
   }, []);
 
   return (
@@ -30,14 +45,18 @@ function App() {
       <SnackbarContextProvider>
         <PlayerContextProvider>
           <ArchivedCommentContextProvider>
-            <Routes>
-              <Route path="" element={'Home page'} />
-              <Route path="login" element={<Login />} />
-              <Route path="v1" element={<SingleScreen />} />
-              <Route path="v2" element={<DoubleScreenHome />} />
-              <Route path="v2/player" element={<DoubleScreenPlayer />} />
-              <Route path="v2/songbook" element={<DoubleScreenSongbook />} />
-            </Routes>
+            <ArchiveWorldContextProvider>
+              <Routes>
+                <Route path="" element={'Home page'} />
+                <Route path="login" element={<Login />} />
+                <Route path="v1" element={<SingleScreen />} />
+                <Route path="v2" element={<DoubleScreenHome />} />
+                <Route path="v2/sing" element={<DoubleScreenSing />} />
+                <Route path="v2/player" element={<DoubleScreenPlayer />} />
+                <Route path="v2/songbook" element={<DoubleScreenSongbook />} />
+                <Route path="v2/archive" element={<DoubleScreenArchive />} />
+              </Routes>
+            </ArchiveWorldContextProvider>
           </ArchivedCommentContextProvider>
         </PlayerContextProvider>
       </SnackbarContextProvider>

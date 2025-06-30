@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import { usePlayerContext } from '../../context/PlayerContext';
 import { useState } from 'react';
 import { useArchivedCommentContext } from '../../context/ArchivedCommentContext';
@@ -18,28 +18,35 @@ export default function AddCommentSection() {
       <Box
         sx={{
           height: '100vh',
-          mx: '2rem',
+          mx: '7rem',
+          mt: '43rem',
         }}
       >
-        <Box>Now playing: {nowPlaying.video.title}</Box>
-        <img
-          src={nowPlaying.video.thumbnail}
-          alt=""
-          style={{ width: '100%' }}
-        />
-        <Box sx={{ mt: '2rem', fontSize: '1.5rem'}}> If this song resonates, where are you transported to?</Box>
         <TextField
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           fullWidth
           multiline
           rows={4}
-          placeholder="a feeling, a memory, a possibility, a world?"
+          sx={{
+            textarea: {
+              color: 'white',
+              fontFamily: 'PixelifySans',
+              fontSize: '2rem',
+              lineHeight: 1.5,
+            },
+          }}
         />
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-          <Button variant="contained" onClick={onSendToPortal}>
-            Send to portal
-          </Button>
+        <Box display="flex" justifyContent="flex-end">
+          <Box
+            sx={{
+              background:
+                'url(/karaoke-app/src/assets/images/portal-button.png) no-repeat center center / cover',
+              width: '13rem',
+              height: '5rem',
+            }}
+            onClick={onSendToPortal}
+          />
         </Box>
       </Box>
     )

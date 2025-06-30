@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePlayerContext } from '../../context/PlayerContext';
 import { useArchivedCommentContext } from '../../context/ArchivedCommentContext';
 import { Comment } from '../../types/SongData';
-import { Box, Paper, Slide } from '@mui/material';
+import { Box, Slide } from '@mui/material';
 import usePrevious from '../../hooks/usePrevious';
 
 const SYNC_INTERVAL = 1000;
@@ -11,7 +11,7 @@ type TimedComment = Comment & { shownAt: number };
 
 export default function ViewCommentSection() {
   const { currentTimestamp } = usePlayerContext();
-  const { archivedItem, currentArchiveId } = useArchivedCommentContext();
+  const { archivedItem, currentArchiveId, markCommentAsSeen } = useArchivedCommentContext();
   const previousArchiveId = usePrevious(currentArchiveId);
 
   const [visibleComments, setVisibleComments] = useState<TimedComment[]>([]);
@@ -27,7 +27,9 @@ export default function ViewCommentSection() {
 
     if (newComments.length > 0) {
       newComments.forEach((comment) => {
+        console.log('comment:', comment)
         shownCommentIds.current.add(comment.uuid);
+        markCommentAsSeen(comment.uuid);
       });
       const newVisibleComments = newComments.map((comment) => ({
         ...comment,
@@ -59,7 +61,7 @@ export default function ViewCommentSection() {
   return (
     <Box
       sx={{
-        mx: '2rem',
+        mx: '0.5rem',
         my: '1rem',
         overflowY: 'auto',
         display: 'flex',
@@ -76,11 +78,24 @@ export default function ViewCommentSection() {
           mountOnEnter
           unmountOnExit
         >
-          <Paper elevation={2} sx={{ textAlign: 'left', padding: '0.5rem' }}>
-            <strong>{formatTimestamp(comment.timestamp)}</strong>
-            &nbsp;
-            <span>{comment.comment}</span>
-          </Paper>
+          <Box
+            sx={{
+              textAlign: 'left',
+              padding: '0.5rem',
+              background:
+                'url(/karaoke-app/src/assets/images/comment-0.svg) no-repeat center center / cover',
+              height: '11rem',
+              overflowY: 'auto',
+              fontSize: '2rem',
+              color: comment.isNew ? 'white' : '#555',
+            }}
+          >
+            <Box sx={{ px: '3rem', py: '1rem' }}>
+              <strong>{formatTimestamp(comment.timestamp)}</strong>
+              &nbsp;
+              <span>{comment.comment}</span>
+            </Box>
+          </Box>
         </Slide>
       ))}
     </Box>

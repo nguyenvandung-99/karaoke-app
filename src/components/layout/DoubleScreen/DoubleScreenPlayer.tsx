@@ -9,7 +9,8 @@ export default function DoubleScreenPlayer() {
         width: '100%',
         height: '100vh',
         display: 'grid',
-        gridTemplateColumns: '1fr 300px',
+        gridTemplateColumns: '1fr 500px',
+        background: `url(/karaoke-app/src/assets/images/Asset-3_linear.png) no-repeat center center / cover`,
       }}
     >
       <Player />

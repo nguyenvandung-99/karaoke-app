@@ -6,7 +6,8 @@ import SelectYoutubeVideoModal from './SelectYoutubeVideoModal';
 import useQueue from '../../hooks/useQueue';
 import { SearchYoutubeResult } from '../../types/SearchResult';
 import useArchive from '../../hooks/useArchive';
-import { ArchivedSongData } from '../../types/SongData';
+import { ArchivedSongData, VideoInfo } from '../../types/SongData';
+import { useSnackbarContext } from '../../context/SnackbarContext';
 
 export default function Songbook() {
   const [isVideoSelectionModalOpen, setIsVideoSelectionModalOpen] =
@@ -21,22 +22,38 @@ export default function Songbook() {
   const { addToArchive, archive } = useArchive();
   const [queue, setQueue] = useQueue();
 
+  const { showSnackbar } = useSnackbarContext();
+
+  const addToQueue = ({ video, name }: { video: VideoInfo; name: string }) => {
+    if (queue.some((item) => item.video.videoId === video.videoId)) {
+      showSnackbar({
+        message: `Video "${video.title}" is already in the queue.`,
+      });
+      return;
+    }
+
+    setQueue([
+      ...queue,
+      {
+        singer: name,
+        video,
+      },
+    ]);
+  };
+
   function onSelectVideo(selection: {
     selected: SearchYoutubeResult | null;
     name?: string;
   }) {
     if (!selection.selected) return;
-    setQueue([
-      ...queue,
-      {
-        singer: selection.name || '',
-        video: {
-          videoId: selection.selected.id.videoId,
-          title: selection.selected.snippet.title,
-          thumbnail: selection.selected.snippet.thumbnails.default.url,
-        },
+    addToQueue({
+      video: {
+        videoId: selection.selected.id.videoId,
+        title: selection.selected.snippet.title,
+        thumbnail: selection.selected.snippet.thumbnails.default.url,
       },
-    ]);
+      name: selection.name || '',
+    });
     setSelectedTrack(null);
     const isItemInArchive = (item: ArchivedSongData) => {
       return (
@@ -62,6 +79,18 @@ export default function Songbook() {
         spotifyId: selectedTrack?.id || '',
         comments: [],
         uuid,
+        trackName: selectedTrack?.name || '',
+        artistName: selectedTrack?.artists.map((artist) => artist.name).join(', ') || '',
+        geniusInfo: {
+          geniusId: undefined,
+          geniusUrl: null,
+          geniusTags: null,
+        },
+        youtubeInfo: {
+          earliestUploadDate: selection.selected.snippet.publishedAt,
+          latestUploadDate: selection.selected.snippet.publishedAt,
+          viewCount: +selection.selected.statistics?.viewCount || 0,
+        },
       };
       addToArchive(newArchivedItem);
     } else {
@@ -87,16 +116,56 @@ export default function Songbook() {
   }
 
   return (
-    <Box sx={{ px: '2rem', bgcolor: 'pink' }}>
-      <Box>Songbook</Box>
+    <Box
+      sx={{
+        ml: '6rem',
+        mr: '2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        height: 'calc(100vh - 3rem)',
+      }}
+    >
       <Box
-        sx={{ display: 'flex', alignItems: 'center', gap: '1rem', mt: '1rem' }}
+        sx={{ display: 'flex', alignItems: 'center', gap: '1rem', mt: '11.5rem' }}
       >
-        <Box>Search</Box>
         <SearchSpotify
           selectedTrack={selectedTrack}
           onSelectTrack={onSelectTrack}
         />
+      </Box>
+      <Box
+        sx={{
+          // bgcolor: '#FFD0DB',
+          p: '1rem',
+          mt: '1rem',
+        overflowY: 'scroll',
+mb: '6rem',
+          flexGrow: 1,
+        }}
+      >
+        {archive.map((item) => (
+          <Box
+            key={item.uuid}
+            sx={{
+              padding: '8px',
+              borderBottom: '1px solid #ccc',
+              '&:hover': {
+                backgroundColor: '#ffe0e6',
+                cursor: 'pointer',
+              },
+            }}
+            onClick={() => {
+              addToQueue({
+                video: item.videos[0],
+                name: '',
+              });
+            }}
+          >
+            <Box sx={{ fontWeight: 'bold' }}>
+              {item.videos[0]?.title || 'No Title'}
+            </Box>
+          </Box>
+        ))}
       </Box>
       <SelectYoutubeVideoModal
         onSelectVideo={onSelectVideo}

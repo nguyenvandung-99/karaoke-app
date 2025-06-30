@@ -50,66 +50,79 @@ export default function SearchSpotify({
   }, [searchValue]);
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Autocomplete
-        disablePortal
-        options={searchResults}
-        getOptionLabel={(option) =>
-          option
-            ? `${option.name} - ${option.artists
-                .map((artist) => artist.name)
-                .join(', ')}`
-            : ''
-        }
-        value={selectedTrack}
-        renderInput={(params) => <TextField {...params} />}
-        onChange={(_, option) => onSelectTrack(option)}
-        filterOptions={(options) => {
-          const result = [...options];
-          result.push(null as unknown as Track);
-          return result;
-        }}
-        onInputChange={(_, value) => setSearchValue(value)}
-        fullWidth
-        renderOption={(props, option) =>
-          option ? (
-            <li
-              {...props}
-              key={option.id}
-              style={{
-                display: 'grid',
-                gap: '8px',
-                maxWidth: '100%',
-                gridTemplateColumns: '60px 1fr',
-                padding: '0.5rem',
-              }}
-            >
-              <img
-                src={option.album.images[0]?.url}
-                alt=""
-                style={{ width: '100%' }}
-              />
-              <Box sx={{ fontSize: '14px', textAlign: 'left' }}>
-                <Box sx={{ fontWeight: 600 }}>{option.name}</Box>
-                <Box>
-                  {option.artists.map((artist) => artist.name).join(', ')}
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+      <Box sx={{ width: '68%', pr: '9%' }}>
+        <Autocomplete
+          disablePortal
+          options={searchResults}
+          getOptionLabel={(option) =>
+            option
+              ? `${option.name} - ${option.artists
+                  .map((artist) => artist.name)
+                  .join(', ')}`
+              : ''
+          }
+          value={selectedTrack}
+          renderInput={(params) => <TextField {...params} />}
+          onChange={(_, option) => onSelectTrack(option)}
+          filterOptions={(options) => {
+            const result = [...options];
+            result.push(null as unknown as Track);
+            return result;
+          }}
+          onInputChange={(_, value) => setSearchValue(value)}
+          fullWidth
+          sx={{
+            '& .MuiInputBase-root': {
+              color: 'white',
+              fontFamily: 'PixelifySans',
+              py: 0,
+              '& .MuiInputBase-input': {
+              fontSize: '1.25rem',
+                py: 0
+              }
+            },
+          }}
+          renderOption={(props, option) =>
+            option ? (
+              <li
+                {...props}
+                key={option.id}
+                style={{
+                  display: 'grid',
+                  gap: '8px',
+                  maxWidth: '100%',
+                  gridTemplateColumns: '60px 1fr',
+                  padding: '0.5rem',
+                }}
+              >
+                <img
+                  src={option.album.images[0]?.url}
+                  alt=""
+                  style={{ width: '100%' }}
+                />
+                <Box sx={{ fontSize: '14px', textAlign: 'left' }}>
+                  <Box sx={{ fontWeight: 600 }}>{option.name}</Box>
+                  <Box>
+                    {option.artists.map((artist) => artist.name).join(', ')}
+                  </Box>
                 </Box>
-              </Box>
-            </li>
-          ) : (
-            <li
-              {...props}
-              key="no-selection"
-              style={{ padding: '0.5rem' }}
-              onClick={() => onSelectTrack(null)}
-            >
-              <Box sx={{ fontSize: '14px', textAlign: 'left' }}>
-                Can't find the song? Click here to search on Youtube
-              </Box>
-            </li>
-          )
-        }
-      />
+              </li>
+            ) : (
+              <li
+                {...props}
+                key="no-selection"
+                style={{ padding: '0.5rem' }}
+                onClick={() => onSelectTrack(null)}
+              >
+                <Box sx={{ fontSize: '14px', textAlign: 'left' }}>
+                  Can't find the song? Click here to search on Youtube
+                </Box>
+              </li>
+            )
+          }
+        />
+      </Box>
     </Box>
   );
 }

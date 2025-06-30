@@ -1,9 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
-  font-family: Freude, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: PixelifySans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -68,4 +64,47 @@ button:hover {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* PixelifySans */
+@font-face {
+  font-family: 'PixelifySans';
+  src: url('./assets/fonts/PixelifySans/PixelifySans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelifySans';
+  src: url('./assets/fonts/PixelifySans/PixelifySans-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelifySans';
+  src: url('./assets/fonts/PixelifySans/PixelifySans-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelifySans';
+  src: url('./assets/fonts/PixelifySans/PixelifySans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelifySans';
+  src: url('./assets/fonts/PixelifySans/PixelifySans-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelifySans';
+  src: url('./assets/fonts/PixelifySans/PixelifySans-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
 }

@@ -5,3 +5,7 @@ export const CenterFlexBox = styled(Box)(() => ({
   justifyContent: 'center',
   alignItems: 'center',
 }));
+
+export const CenterFlexBoxWithBackground = styled(CenterFlexBox)(() => ({
+  background: 'url(/karaoke-app/src/assets/images/Sing-background.svg) no-repeat center center / cover',
+}));
